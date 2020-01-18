@@ -1,6 +1,6 @@
 # How to: building a pfSense .iso from sources
 
-Here are the steps for building a pfSense ISO file. I tried to follow [the guide of PiBa-NL](https://github.com/PiBa-NL/PiBa-NL-WIKI/wiki/How-to-building-a-pfSense-.iso-from-sources) firstly, but there was missing things so I made my own guide. This guide has been written for 2.5.0 (which does not exist yet), but may works for other versions
+Here are the steps for building a pfSense ISO file. I tried to follow [the guide of PiBa-NL](https://github.com/PiBa-NL/PiBa-NL-WIKI/wiki/How-to-building-a-pfSense-.iso-from-sources) firstly, but there was missing things so I made my own guide. This guide has been written for 2.4.5 (which does not exist yet), but may works for other versions
 
 *Like for PiBa-NL guide, small disclaimer: Stuff might be missing, and stuff will change over time, and might not be updated.*
 
@@ -14,18 +14,18 @@ I'll use libreSense for this tutorial, but you could use whatever you want.
 You will then have to fork and apply updates to 3 repositories: 
 
 ### FreeBSD Source
-- Fork https://github.com/pfsense/FreeBSD-src and checkout to the `RELENG_2_5` branch. 
+- Fork https://github.com/pfsense/FreeBSD-src and checkout to the `RELENG_2_4_5` branch. 
 - In the folder `/release/conf/`, rename `pfSense_src-env.conf`, `pfSense_src.conf` and `pfSense_make.conf` to `libreSense_src-env.conf`, `libreSense_src.conf` and `libreSense_make.conf`
 - Rename the file `/sys/amd64/conf/pfSense` to `/sys/amd64/conf/libreSense`
 - Edit the file `/tools/tools/crypto/Makefile` : remove `cryptokeytest` from the `PROGS` command
 
 ### FreeBSD Ports
-- Fork https://github.com/pfsense/FreeBSD-ports and checkout to the `devel` branch (for building dev version) or to  `RELENG_2_5_0` branch (for the stable version)
+- Fork https://github.com/pfsense/FreeBSD-ports and checkout to the `devel` branch (for building dev version) or to  `RELENG_2_4_5` branch (for the stable version)
 - In the folder `/sysutils/pfSense-upgrade/files/`, rename the two files `pfSense-upgrade` and `pfsense-upgrade.wrapper` to `libreSense-upgrade` and `libreSense-upgrade.wrapper`.
 
 ### pfSense GUI
 - Fork https://github.com/pfsense/pfsense . 
-- Go to the folder `/tools/templates/pkg_repos/` in the branch you would like to build (`master`for dev version, `RELENG_2_5_0` for stable version)
+- Go to the folder `/tools/templates/pkg_repos/` in the branch you would like to build (`master`for dev version, `RELENG_2_4_5` for stable version)
 - Change `pfSense` to `libreSense` in the file names (e.g., `pfSense-repo.abi => libreSense-repo.abi`)
 
 ## A deeper look into Netgate build environment
@@ -47,7 +47,7 @@ With that said, let's setup our build server.
 
 # Setup a proper build environment
 
-- You will need to download and install a FreeBSD server that matches the version you want to build. pfSense 2.5.0 [require FreeBSD 12](https://docs.netgate.com/pfsense/en/latest/releases/versions-of-pfsense-and-freebsd.html), in AMD64.
+- You will need to download and install a FreeBSD server that matches the version you want to build. pfSense 2.4.5 [require FreeBSD 12](https://docs.netgate.com/pfsense/en/latest/releases/versions-of-pfsense-and-freebsd.html), in AMD64.
 
 This server can be either a VM or a physical machine. High amount of HDD isn't needed (at least 30 Gb is recommended) but high number of CPU core is advised (otherwise build time may be very long) and high memory amount is required (>10Gb recommended. 8 Gb should be fine....6 Gb is not enough and may cause your build to crash). [You can download a FreeBSD ISO here](https://download.freebsd.org/ftp/releases/amd64/amd64/ISO-IMAGES/)
 
@@ -90,8 +90,8 @@ pkg install -y open-vm-tools
 
 Then you need to configure nginx for PKG hosting and poudriere monitoring:
 ```
-# pfSense_gui_branch represents the branch of pfSense GUI that will be compiled, with "RELENG" replaced by "v" : master for a development ISO, v2_5_0 for a stable ISO
-# pfSense_port_branch represents the branch of FreeBSD ports that will be compiled, using the same replacement ("RELENG"=>"v") : devel for a development ISO, v2_5_0 for a stable ISO
+# pfSense_gui_branch represents the branch of pfSense GUI that will be compiled, with "RELENG" replaced by "v" : master for a development ISO, v2_4_5 for a stable ISO
+# pfSense_port_branch represents the branch of FreeBSD ports that will be compiled, using the same replacement ("RELENG"=>"v") : devel for a development ISO, v2_4_5 for a stable ISO
 # product_name represents the name of your product.
 
 set pfSense_gui_branch=v2_4_5 # Replace with the version you want to build
@@ -156,7 +156,6 @@ cd pfsense
 git checkout ${pfSense_gui_version}
 
 # PKG signing key
-mv src/usr/local/share/pfSense src/usr/local/share/${product_name}
 rm src/usr/local/share/${product_name}/keys/pkg/trusted/*
 cp /root/sign/fingerprint src/usr/local/share/${product_name}/keys/pkg/trusted/fingerprint
 ```
