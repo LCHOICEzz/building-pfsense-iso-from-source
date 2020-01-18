@@ -151,7 +151,7 @@ chmod +x /root/sign/sign.sh
 Now that your server is configured, we will configure how pfSense will be compiled. Clone your fork of pfSense GUI, checkout to the branch that will be built, and configure your fork to use your signing key
 ```
 cd /root
-git clone https://github.com/{your username}/pfsense.git
+git clone https://gitee.com/LCHOICEzz/pfsense.git
 cd pfsense
 git checkout ${pfSense_gui_version}
 
@@ -165,8 +165,8 @@ cp /root/sign/fingerprint src/usr/local/share/${product_name}/keys/pkg/trusted/f
 Let's then create a file called ```build.conf``` in the folder of pfSense GUI.
 ```
 export PRODUCT_NAME="libreSense" # Replace with your product name
-export FREEBSD_REPO_BASE=https://github.com/{your username}/FreeBSD-src.git # Location of your FreeBSD sources repository
-export POUDRIERE_PORTS_GIT_URL=https://github.com/{your username}/FreeBSD-ports.git # Location your FreeBSD ports repository
+export FREEBSD_REPO_BASE=https://gitee.com/LCHOICEzz/FreeBSD-src.git # Location of your FreeBSD sources repository
+export POUDRIERE_PORTS_GIT_URL=https://github.com/LCHOICEzz/FreeBSD-ports.git # Location your FreeBSD ports repository
 
 export FREEBSD_BRANCH=RELENG_2_4_5 # Branch of FreeBSD sources to build
 # The branch of FreeBSD ports to build is set automatically based on pfSense GUI branch.
