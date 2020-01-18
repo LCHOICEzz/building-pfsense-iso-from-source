@@ -94,9 +94,10 @@ Then you need to configure nginx for PKG hosting and poudriere monitoring:
 # pfSense_port_branch represents the branch of FreeBSD ports that will be compiled, using the same replacement ("RELENG"=>"v") : devel for a development ISO, v2_5_0 for a stable ISO
 # product_name represents the name of your product.
 
-set pfSense_gui_branch=v2_5_0 # Replace with the version you want to build
-set pfSense_port_branch=v2_5_0 # Replace with the version you want to build
+set pfSense_gui_branch=v2_4_5 # Replace with the version you want to build
+set pfSense_port_branch=v2_4_5 # Replace with the version you want to build
 set product_name=libreSense # Replace with your product name
+set pfSense_gui_version=RELENG_2_4_5
 
 
 cd /usr/local/www/nginx/
@@ -152,7 +153,7 @@ Now that your server is configured, we will configure how pfSense will be compil
 cd /root
 git clone https://github.com/{your username}/pfsense.git
 cd pfsense
-git checkout ${pfSense_gui_branch}
+git checkout ${pfSense_gui_version}
 
 # PKG signing key
 mv src/usr/local/share/pfSense src/usr/local/share/${product_name}
@@ -167,7 +168,7 @@ export PRODUCT_NAME="libreSense" # Replace with your product name
 export FREEBSD_REPO_BASE=https://github.com/{your username}/FreeBSD-src.git # Location of your FreeBSD sources repository
 export POUDRIERE_PORTS_GIT_URL=https://github.com/{your username}/FreeBSD-ports.git # Location your FreeBSD ports repository
 
-export FREEBSD_BRANCH=RELENG_2_5 # Branch of FreeBSD sources to build
+export FREEBSD_BRANCH=RELENG_2_4_5 # Branch of FreeBSD sources to build
 # The branch of FreeBSD ports to build is set automatically based on pfSense GUI branch.
 # If you would like to build a specific branch of FreeBSD ports, the variable to set is POUDRIERE_PORTS_GIT_BRANCH
 
